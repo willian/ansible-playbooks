@@ -1,0 +1,12 @@
+---
+- name: Adding key for hellobits repository
+  sudo: true
+  apt_key: url={{hellobits_repo_url}}/hellobits.key state=present
+
+- name: Adding repository hellobits
+  sudo: true
+  copy: content='deb {{hellobits_repo_url}} precise main' dest={{hellobits_repo_file}} owner=root group=root mode=644
+
+- name: Ensure Ruby 2.0 is up to date
+  sudo: true
+  apt: pkg=ruby-ni state=latest

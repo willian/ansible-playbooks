@@ -1,0 +1,31 @@
+---
+- name: ensure apt cache is up to date
+  sudo: true
+  action: apt update_cache=yes
+
+- name: Ensure basic packages are installed and up to date
+  sudo: true
+  shell: apt-get install -y {{item}}
+  with_items:
+    - python-apt
+    - python-software-properties
+    - vim
+    - git
+
+- name: Ensure ntp is at the latest version
+  sudo: true
+  apt: pkg=ntp state=latest
+  notify:
+    - restart ntp
+
+- name: update vimfiles from GitHub
+  git: repo=git@github.com:willian/vimfiles.git dest=/home/vagrant/github/vimfiles
+
+# - name: install vimfiles
+  # shell: cd /home/vagrant/github/vimfiles && ./install.sh
+
+- name: update vagrant-config from GitHub
+  git: repo=git@github.com:willian/vagrant-config.git dest=/home/vagrant/github/vagrant-config
+
+- name: install vagrant-config
+  shell: cd /home/vagrant/github/vagrant-config && ./install.sh

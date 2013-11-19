@@ -1,0 +1,12 @@
+---
+- name: Ensure Memcached is at the latest version
+  sudo: true
+  apt: name=memcached state=latest update-cache=yes
+  notify:
+  - restart memcached
+
+- name: Ensure Redis Server is running
+  sudo: true
+  service: name=memcached state=started
+  notify:
+  - restart memcached

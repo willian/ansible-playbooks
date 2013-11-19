@@ -1,0 +1,25 @@
+upstream {{app_name}} {
+  server 127.0.0.1:3000;
+}
+
+server {
+  listen   80;
+  server_name {{app_name}}.dev;
+
+  access_log /var/log/{{app_name}}.dev/access.log;
+  error_log  /var/log/{{app_name}}.dev/error.log;
+  root       /vagrant/public;
+  index      index.html;
+
+  location / {
+    proxy_set_header X-Real-IP  $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_redirect   off;
+    try_files        $uri $uri/index.html $uri.html @ruby;
+  }
+
+  location @ruby {
+    proxy_pass http://{{app_name}};
+  }
+}

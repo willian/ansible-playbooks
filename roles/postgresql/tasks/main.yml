@@ -1,0 +1,33 @@
+---
+- name: Adding key for postgresql repository
+  sudo: true
+  apt_key: url=https://www.postgresql.org/media/keys/ACCC4CF8.asc state=present
+
+- name: Adding postgresql repository
+  sudo: true
+  copy: content='deb http://apt.postgresql.org/pub/repos/apt/ wheezy-pgdg main' dest=/etc/apt/sources.list.d/pgdg.list owner=root group=root mode=644
+
+- name: Ensure PostgreSQL 9.3 is at the latest version
+  sudo: true
+  apt: name={{item}} state=latest
+  with_items:
+    - postgresql-9.3
+    - postgresql-contrib-9.3
+    - postgresql-server-dev-9.3
+    - python-psycopg2
+  notify:
+  - restart postgresql
+
+- name: ensure database is created
+  sudo: true
+  sudo_user: postgres
+  postgresql_db: name={{dbname}}
+  notify:
+  - restart postgresql
+
+- name: ensure user has access to database
+  sudo: true
+  sudo_user: postgres
+  postgresql_user: db={{dbname}} name={{dbuser}} password= priv=ALL
+  notify:
+  - restart postgresql
