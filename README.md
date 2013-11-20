@@ -6,6 +6,7 @@
 * Common
 	* python-apt
 	* python-software-properties
+	* ack-grep
 	* vim
 	* git
 	* ntp
