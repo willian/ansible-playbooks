@@ -1,7 +1,11 @@
 ---
 - name: ensure apt cache is up to date
   sudo: true
-  action: apt update_cache=yes
+  shell: apt-get update
+
+- name: ensure apt packages are up to date
+  sudo: true
+  shell: apt-get upgrade -y
 
 - name: Ensure basic packages are installed and up to date
   sudo: true
