@@ -18,6 +18,7 @@
 * PostgreSQL
 * Redis
 * Ruby 2.0
+	* Bundler
 
 ## Contributing
 1. Fork it

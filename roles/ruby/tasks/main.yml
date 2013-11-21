@@ -10,3 +10,6 @@
 - name: Ensure Ruby 2.0 is up to date
   sudo: true
   apt: pkg=ruby-ni state=latest
+
+- name: Ensure Bundler is present
+  shell: gem install bundler
