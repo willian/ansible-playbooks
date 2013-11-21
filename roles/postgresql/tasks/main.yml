@@ -18,16 +18,20 @@
   notify:
   - restart postgresql
 
-- name: ensure database is created
+- name: Change PostgreSQL configuration file to not ask for password on login
   sudo: true
-  sudo_user: postgres
-  postgresql_db: name={{dbname}}
+  shell: /bin/sed -i -e 's/peer/trust/' {{pg_hba_file}} && /bin/sed -i -e 's/md5/trust/' {{pg_hba_file}}
   notify:
   - restart postgresql
 
-- name: ensure user has access to database
+- name: Create user $dbuser
   sudo: true
   sudo_user: postgres
-  postgresql_user: db={{dbname}} name={{dbuser}} password= priv=ALL
+  shell: createuser -s -d {{dbuser}}
+  notify:
+  - restart postgresql
+
+- name: Create a database for $dbuser
+  shell: createdb
   notify:
   - restart postgresql
