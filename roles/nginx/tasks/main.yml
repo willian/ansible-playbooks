@@ -26,11 +26,13 @@
 
 - name: Create NGINX log directory
   sudo: true
-  shell: mkdir -p /var/log/{{app_name}}.dev
+  shell: mkdir -p /var/log/nginx/{{item}}.dev
+  with_items: nginx_hosts
 
 - name: Ensure VirtualHost files exists and is updated
   sudo: true
-  template: src=nginx.j2 dest=/etc/nginx/conf.d/{{app_name}}.dev.conf
+  template: src=nginx.j2 dest=/etc/nginx/conf.d/{{item}}.dev.conf
+  with_items: nginx_hosts
   notify:
   - restart nginx
 

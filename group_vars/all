@@ -1,6 +1,0 @@
-# NGINX
-app_name: "bebeprecisa"
-
-# PostgreSQL
-dbname: vagrant
-dbuser: vagrant

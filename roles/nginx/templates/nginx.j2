@@ -1,25 +1,34 @@
-upstream {{app_name}} {
+upstream {{item}}_app {
   server 127.0.0.1:3000;
 }
 
 server {
-  listen   80;
-  server_name {{app_name}}.dev;
+  server_name {{item}}.dev;
+  listen      80;
+  root        /vagrant/{{item}}/public;
 
-  access_log /var/log/{{app_name}}.dev/access.log;
-  error_log  /var/log/{{app_name}}.dev/error.log;
-  root       /vagrant/public;
-  index      index.html;
+  access_log /var/log/nginx/{{item}}.dev/access.log;
+  error_log /var/log/nginx/{{item}}.dev/error.log;
 
-  location / {
-    proxy_set_header X-Real-IP  $remote_addr;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  add_header  Strict-Transport-Security "max-age=315360000; includeSubdomains";
+
+  client_max_body_size    4G;
+  client_body_buffer_size 128k;
+
+  try_files $uri $uri.html $uri/index.html @rails_server;
+
+  location @rails_server {
     proxy_set_header Host $http_host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
     proxy_redirect   off;
-    try_files        $uri $uri/index.html $uri.html @ruby;
-  }
 
-  location @ruby {
-    proxy_pass http://{{app_name}};
+    # I am a proxy: only pass GET, HEAD, POST, PUT and DELETE.
+    if ($request_method !~ ^(GET|HEAD|POST|PUT|DELETE)$ ) {
+      return 403;
+    }
+
+    proxy_pass http://{{item}}_app;
   }
 }
