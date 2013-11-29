@@ -5,7 +5,7 @@
 
 - name: Ensure nodejs is at the latest version
   sudo: true
-  apt: name={{item}} state=latest
+  apt: name={{item}} state=latest update_cache=yes
   with_items:
     - nodejs
     - nodejs-legacy
