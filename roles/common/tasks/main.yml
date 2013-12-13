@@ -26,8 +26,8 @@
 - name: update vimfiles from GitHub
   git: repo=git@github.com:willian/vimfiles.git dest=/home/vagrant/github/vimfiles
 
-# - name: install vimfiles
-  # shell: cd /home/vagrant/github/vimfiles && ./install.sh
+- name: install vimfiles
+  shell: cd /home/vagrant/github/vimfiles && ./install.sh
 
 - name: update vagrant-config from GitHub
   git: repo=git@github.com:willian/vagrant-config.git dest=/home/vagrant/github/vagrant-config
