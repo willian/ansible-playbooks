@@ -24,14 +24,14 @@
   notify:
   - restart postgresql
 
-- name: Create user $dbuser
+- name: Create user {{dbuser}}
   sudo: true
   sudo_user: postgres
   shell: createuser -s -d {{dbuser}}
   notify:
   - restart postgresql
 
-- name: Create a database for $dbuser
+- name: Create a database for {{dbuser}}
   shell: createdb
   notify:
   - restart postgresql
