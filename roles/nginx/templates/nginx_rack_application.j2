@@ -1,0 +1,42 @@
+upstream {{ item.host_name }}_app {
+  {% for upstream in item.upstreams %}
+    server {{ upstream }};
+  {% endfor %}
+}
+
+server {
+  server_name {{ item.host_name }}.dev;
+
+  {% if item.port is defined %}
+    listen {{ item.port }};
+  {% else %}
+    listen 80;
+  {% endif %}
+
+  root {{ item.root_path }};
+
+  access_log /var/log/nginx/{{ item.host_name }}.dev/access.log;
+  error_log /var/log/nginx/{{ item.host_name }}.dev/error.log;
+
+  add_header Strict-Transport-Security "max-age=315360000; includeSubdomains";
+
+  client_max_body_size    4G;
+  client_body_buffer_size 128k;
+
+  try_files $uri $uri.html $uri/index.html @rails_server;
+
+  location @rails_server {
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_redirect   off;
+
+    # I am a proxy: only pass GET, HEAD, POST, PUT and DELETE.
+    if ($request_method !~ ^(GET|HEAD|POST|PUT|DELETE)$ ) {
+      return 403;
+    }
+
+    proxy_pass http://{{ item.host_name }}_app;
+  }
+}

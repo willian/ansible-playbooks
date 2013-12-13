@@ -7,31 +7,20 @@
   sudo: true
   copy: content='deb http://nginx.org/packages/mainline/debian/ wheezy nginx' dest=/etc/apt/sources.list.d/nginx.list owner=root group=root mode=644
 
-- name: Ensure PostgreSQL 9.3 is at the latest version
-  sudo: true
-  apt: name={{item}} state=latest
-  with_items:
-    - postgresql-9.3
-    - postgresql-contrib-9.3
-    - postgresql-server-dev-9.3
-    - python-psycopg2
-  notify:
-  - restart postgresql
-
 - name: Ensure NGINX is at the latest version
   sudo: true
-  apt: pkg=nginx state=latest
+  apt: pkg=nginx state=latest update_cache=yes
   notify:
   - restart nginx
 
 - name: Create NGINX log directory
   sudo: true
-  shell: mkdir -p /var/log/nginx/{{item}}.dev
+  shell: mkdir -p /var/log/nginx/{{item.host_name}}.dev
   with_items: nginx_hosts
 
 - name: Ensure VirtualHost files exists and is updated
   sudo: true
-  template: src=nginx.j2 dest=/etc/nginx/conf.d/{{item}}.dev.conf
+  template: src=nginx_{{item.type}}.j2 dest=/etc/nginx/conf.d/{{item.host_name}}.dev.conf
   with_items: nginx_hosts
   notify:
   - restart nginx

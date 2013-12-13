@@ -34,7 +34,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "/full/path/to/ansible-playbooks/playbook.yml"
-    ansible.extra_vars = { nginx_hosts: ["YOUR_APPLICATION_HOSTNAME"] }
+    ansible.extra_vars = {
+      nginx_hosts: [
+        {
+          type: "static|rack_application",
+          host_name: "YOUR_APPLICATION_HOSTNAME",
+          upstreams: ["use application's full ip address or unix socket"], # only for Rack applications
+          root_path: "/path/to/application/directory",
+          port: 80, # optional
+          cache_static_files: true|false # only for Static applications
+        }
+      ].to_json # You need this because Vagrant sends Ruby Hash to Ansible instead of JSON =(
+    }
   end
 end
 ```

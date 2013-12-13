@@ -1,0 +1,24 @@
+server {
+  server_name {{ item.host_name }}.dev;
+
+  {% if item.port is defined %}
+    listen {{ item.port }};
+  {% else %}
+    listen 80;
+  {% endif %}
+
+  root {{ item.root_path }};
+  index index.html index.html;
+
+  access_log /var/log/nginx/{{ item.host_name }}.dev/access.log;
+  error_log /var/log/nginx/{{ item.host_name }}.dev/error.log;
+
+  {% if item.cache_static_files is sameas true %}
+    expires 1d;
+  {% endif %}
+
+  add_header Strict-Transport-Security "max-age=315360000; includeSubdomains";
+
+  client_max_body_size    4G;
+  client_body_buffer_size 128k;
+}
