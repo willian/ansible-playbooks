@@ -1,9 +1,9 @@
 ---
-- name: ensure apt cache is up to date
+- name: Ensure apt cache is up to date
   sudo: true
   shell: apt-get update
 
-- name: ensure apt packages are up to date
+- name: Ensure apt packages are up to date
   sudo: true
   shell: apt-get upgrade -y
 
@@ -23,14 +23,24 @@
   notify:
     - restart ntp
 
-- name: update vimfiles from GitHub
-  git: repo=git@github.com:willian/vimfiles.git dest=/home/vagrant/github/vimfiles
+- name: Copy your SSH files
+  copy: src={{lookup('env', 'HOME')}}/.ssh/
+        dest={{ansible_env.HOME}}/.ssh/
 
-- name: install vimfiles
+- name: Update vimfiles from GitHub
+  git: repo=git@github.com:willian/vimfiles.git
+       dest=/home/vagrant/github/vimfiles
+       force=yes
+       update=yes
+
+- name: Install vimfiles
   shell: cd /home/vagrant/github/vimfiles && ./install.sh
 
-- name: update vagrant-config from GitHub
-  git: repo=git@github.com:willian/vagrant-config.git dest=/home/vagrant/github/vagrant-config
+- name: Update vagrant-config from GitHub
+  git: repo=git@github.com:willian/vagrant-config.git
+       dest=/home/vagrant/github/vagrant-config
+       force=yes
+       update=yes
 
-- name: install vagrant-config
+- name: Install vagrant-config
   shell: cd /home/vagrant/github/vagrant-config && ./install.sh
