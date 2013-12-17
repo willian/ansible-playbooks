@@ -16,6 +16,7 @@
     - ack-grep
     - vim
     - git
+    - tmux
 
 - name: Ensure ntp is at the latest version
   sudo: true
