@@ -7,9 +7,9 @@
   sudo: true
   copy: content='deb {{hellobits_repo_url}} precise main' dest={{hellobits_repo_file}} owner=root group=root mode=644
 
-- name: Ensure Ruby 2.0 is up to date
+- name: Ensure Ruby 2.1 is up to date
   sudo: true
-  apt: pkg=ruby-ni state=latest update_cache=yes
+  apt: pkg=ruby-2.1 state=latest update_cache=yes
 
 - name: Ensure Bundler is present
   shell: gem install bundler
