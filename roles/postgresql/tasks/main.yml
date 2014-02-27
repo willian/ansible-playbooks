@@ -1,14 +1,14 @@
 ---
 - name: Adding key for postgresql repository
-  sudo: true
+  sudo: yes
   apt_key: url=https://www.postgresql.org/media/keys/ACCC4CF8.asc state=present
 
 - name: Adding postgresql repository
-  sudo: true
+  sudo: yes
   copy: content='deb http://apt.postgresql.org/pub/repos/apt/ wheezy-pgdg main' dest=/etc/apt/sources.list.d/pgdg.list owner=root group=root mode=644
 
 - name: Ensure PostgreSQL 9.3 is at the latest version
-  sudo: true
+  sudo: yes
   apt: name={{item}} state=latest update_cache=yes
   with_items:
     - postgresql-9.3
@@ -19,13 +19,13 @@
   - restart postgresql
 
 - name: Change PostgreSQL configuration file to not ask for password on login
-  sudo: true
+  sudo: yes
   shell: /bin/sed -i -e 's/peer/trust/' {{pg_hba_file}} && /bin/sed -i -e 's/md5/trust/' {{pg_hba_file}}
   notify:
   - restart postgresql
 
 - name: Create user {{dbuser}}
-  sudo: true
+  sudo: yes
   sudo_user: postgres
   shell: createuser -s -d {{dbuser}}
   notify:

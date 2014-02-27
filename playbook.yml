@@ -2,7 +2,7 @@
 - hosts: all
   roles:
     - common
-    - ruby
+    - ruby21
     - nginx
     - postgresql
     - nodejs

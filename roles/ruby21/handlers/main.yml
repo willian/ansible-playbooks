@@ -1,6 +1,3 @@
 ---
 - name: apt-get update
   command: apt-get upgrade -y
-
-- name: restart ntp
-  service: name=ntp state=restarted

@@ -1,10 +1,10 @@
 ---
 - name: Adding backports repository
-  sudo: true
+  sudo: yes
   copy: content='deb http://ftp.debian.org/debian/ wheezy-backports main' dest=/etc/apt/sources.list.d/wheezy_backports.list owner=root group=root mode=644
 
 - name: Ensure nodejs is at the latest version
-  sudo: true
+  sudo: yes
   apt: name={{item}} state=latest update_cache=yes
   with_items:
     - nodejs

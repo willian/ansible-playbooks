@@ -1,30 +1,30 @@
 ---
 - name: Adding key for NGINX repository
-  sudo: true
+  sudo: yes
   apt_key: url=http://nginx.org/keys/nginx_signing.key state=present
 
 - name: Adding NGINX repository
-  sudo: true
+  sudo: yes
   copy: content='deb http://nginx.org/packages/mainline/debian/ wheezy nginx' dest=/etc/apt/sources.list.d/nginx.list owner=root group=root mode=644
 
 - name: Ensure NGINX is at the latest version
-  sudo: true
+  sudo: yes
   apt: pkg=nginx state=latest update_cache=yes
   notify:
   - restart nginx
 
 - name: Create NGINX log directory
-  sudo: true
+  sudo: yes
   shell: mkdir -p /var/log/nginx/{{item.host_name}}.dev
   with_items: nginx_hosts
 
 - name: Ensure VirtualHost files exists and is updated
-  sudo: true
+  sudo: yes
   template: src=nginx_{{item.type}}.j2 dest=/etc/nginx/conf.d/{{item.host_name}}.dev.conf
   with_items: nginx_hosts
   notify:
   - restart nginx
 
 - name: Be sure NGINX is running and enabled
-  sudo: true
+  sudo: yes
   service: name=nginx state=running enabled=yes
