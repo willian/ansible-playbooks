@@ -11,4 +11,4 @@
     - nodejs-legacy
 
 - name: Ensure npm is at the latest version
-  shell: curl https://npmjs.org/install.sh | sudo sh
+  shell: curl -L https://npmjs.org/install.sh | sudo sh
