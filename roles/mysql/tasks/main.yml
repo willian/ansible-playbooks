@@ -1,0 +1,16 @@
+---
+- name: Ensure MySQL Server is installed
+  sudo: yes
+  apt: name={{item}} state=latest update_cache=yes
+  with_items:
+    - mysql-server
+    - mysql-client
+    - libmysqlclient-dev
+    - python-mysqldb
+  notify:
+  - restart mysql
+
+- name: Create user {{dbuser}}
+  mysql_user: name={{dbuser}} password= priv=*.*:ALL state=present
+  notify:
+  - restart mysql
