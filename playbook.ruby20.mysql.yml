@@ -1,0 +1,10 @@
+---
+- hosts: all
+  roles:
+    - common
+    - ruby20
+    - nginx
+    - mysql
+    - nodejs
+    - redis
+    - memcached
