@@ -1,10 +1,61 @@
 ---
-- hosts: all
+- hosts: ror_complete
   roles:
     - common
     - ruby21
     - nginx
     - postgresql
     - nodejs
+    - redis
+    - memcached
+- hosts: ror_ruby20_complete
+  roles:
+    - common
+    - ruby20
+    - nginx
+    - postgresql
+    - nodejs
+    - redis
+    - memcached
+- hosts: ror_mysql_complete
+  roles:
+    - common
+    - ruby21
+    - nginx
+    - mysql
+    - nodejs
+    - redis
+    - memcached
+- hosts: ror_ruby20_mysql_complete
+  roles:
+    - common
+    - ruby20
+    - nginx
+    - mysql
+    - nodejs
+    - redis
+    - memcached
+- hosts: ror_basic
+  roles:
+    - common
+    - ruby21
+    - nginx
+    - nodejs
+- hosts: ror_ruby20_basic
+  roles:
+    - common
+    - ruby20
+    - nginx
+    - nodejs
+- hosts: psql_db
+  roles:
+    - common
+    - postgresql
+    - redis
+    - memcached
+- hosts: mysql_db
+  roles:
+    - common
+    - mysql
     - redis
     - memcached
