@@ -5,7 +5,7 @@ upstream {{ item.host_name }}_app {
 }
 
 server {
-  server_name {{ item.host_name }}.dev;
+  server_name {{ item.uri }};
 
   {% if item.port is defined %}
     listen {{ item.port }};
