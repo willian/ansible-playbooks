@@ -11,12 +11,13 @@
   sudo: yes
   shell: apt-get install -y {{item}}
   with_items:
+    - ack-grep
+    - git
     - python-apt
     - python-software-properties
-    - ack-grep
-    - vim
-    - git
+    - python-twisted
     - tmux
+    - vim
 
 - name: Ensure ntp is at the latest version
   sudo: yes
@@ -28,11 +29,17 @@
   copy: src={{lookup('env', 'HOME')}}/.ssh/
         dest={{ansible_env.HOME}}/.ssh/
 
+- name: Change permissions on SSH key
+  shell: chmod 600 {{ansible_env.HOME}}/.ssh/id_rsa*
+
 - name: Update vimfiles from GitHub
   git: repo=git@github.com:willian/vimfiles.git
        dest=/home/vagrant/github/vimfiles
        force=yes
        update=yes
+
+- name: Install vimfiles
+  shell: cd /home/vagrant/github/vimfiles; ./install.sh
 
 - name: Update vagrant-config from GitHub
   git: repo=git@github.com:willian/vagrant-config.git
@@ -41,4 +48,4 @@
        update=yes
 
 - name: Install vagrant-config
-  shell: cd /home/vagrant/github/vagrant-config && ./install.sh
+  shell: cd /home/vagrant/github/vagrant-config; ./install.sh
