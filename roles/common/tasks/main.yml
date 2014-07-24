@@ -1,4 +1,8 @@
 ---
+- name: Change official repository to Brazilian mirror
+  sudo: yes
+  shell: /bin/sed -i -e 's/us\./br\./' /etc/apt/sources.list
+
 - name: Ensure apt cache is up to date
   sudo: yes
   shell: apt-get update

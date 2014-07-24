@@ -5,7 +5,7 @@
 
 - name: Adding NGINX repository
   sudo: yes
-  copy: content='deb http://nginx.org/packages/mainline/debian/ wheezy nginx' dest=/etc/apt/sources.list.d/nginx.list owner=root group=root mode=644
+  copy: content='deb http://nginx.org/packages/mainline/ubuntu/ trusty nginx' dest=/etc/apt/sources.list.d/nginx.list owner=root group=root mode=644
 
 - name: Ensure NGINX is at the latest version
   sudo: yes
@@ -15,12 +15,12 @@
 
 - name: Create NGINX log directory
   sudo: yes
-  shell: mkdir -p /var/log/nginx/{{item.host_name}}.dev
+  shell: mkdir -p /var/log/nginx/{{item.uri}}
   with_items: nginx_hosts
 
 - name: Ensure VirtualHost files exists and is updated
   sudo: yes
-  template: src=nginx_{{item.type}}.j2 dest=/etc/nginx/conf.d/{{item.host_name}}.dev.conf
+  template: src=nginx_{{item.type}}.j2 dest=/etc/nginx/conf.d/{{item.uri}}.conf
   with_items: nginx_hosts
   notify:
   - restart nginx

@@ -5,7 +5,7 @@
 
 - name: Adding postgresql repository
   sudo: yes
-  copy: content='deb http://apt.postgresql.org/pub/repos/apt/ wheezy-pgdg main' dest=/etc/apt/sources.list.d/pgdg.list owner=root group=root mode=644
+  copy: content='deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main' dest=/etc/apt/sources.list.d/pgdg.list owner=root group=root mode=644
 
 - name: Ensure PostgreSQL 9.3 is at the latest version
   sudo: yes

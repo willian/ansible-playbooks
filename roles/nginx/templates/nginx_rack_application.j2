@@ -15,8 +15,8 @@ server {
 
   root {{ item.root_path }};
 
-  access_log /var/log/nginx/{{ item.host_name }}.dev/access.log;
-  error_log /var/log/nginx/{{ item.host_name }}.dev/error.log;
+  access_log /var/log/nginx/{{ item.uri }}/access.log;
+  error_log /var/log/nginx/{{ item.uri }}/error.log;
 
   add_header Strict-Transport-Security "max-age=315360000; includeSubdomains";
 

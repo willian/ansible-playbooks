@@ -1,14 +1,8 @@
 ---
-- name: Adding backports repository
-  sudo: yes
-  copy: content='deb http://ftp.debian.org/debian/ wheezy-backports main' dest=/etc/apt/sources.list.d/wheezy_backports.list owner=root group=root mode=644
-
-- name: Ensure nodejs is at the latest version
+- name: Ensure nodejs and npm are at the latest version
   sudo: yes
   apt: name={{item}} state=latest update_cache=yes
   with_items:
     - nodejs
     - nodejs-legacy
-
-- name: Ensure npm is at the latest version
-  shell: curl -L https://npmjs.org/install.sh | sudo sh
+    - npm
