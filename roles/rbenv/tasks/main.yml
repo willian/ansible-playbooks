@@ -1,0 +1,32 @@
+---
+- name: Removing rbenv
+  shell: rm -rf {{ ansible_env.HOME }}/.rbenv
+
+- name: Installing rbenv
+  shell: git clone git://github.com/sstephenson/rbenv.git {{ ansible_env.HOME }}/.rbenv
+
+- name: Installing rbenv-gem-rehash plugin
+  shell: git clone https://github.com/sstephenson/rbenv-gem-rehash.git {{ ansible_env.HOME }}/.rbenv/plugins/rbenv-gem-rehash
+
+- name: Installing ruby-build plugin
+  shell: git clone git://github.com/sstephenson/ruby-build.git {{ ansible_env.HOME }}/.rbenv/plugins/ruby-build
+
+- name: Installing latest ruby
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.rbenv/bin:{{ ansible_env.PATH }}"
+  shell: eval "$(rbenv init -)"; rbenv install -s 2.1.2; rbenv global 2.1.2; rbenv rehash
+
+- name: Updating Rubygems
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.rbenv/bin:{{ ansible_env.PATH }}"
+  shell: eval "$(rbenv init -)"; gem update --system
+
+- name: Updating installed gems
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.rbenv/bin:{{ ansible_env.PATH }}"
+  shell: eval "$(rbenv init -)"; gem update -f
+
+- name: Installing Bundler
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.rbenv/bin:{{ ansible_env.PATH }}"
+  shell: eval "$(rbenv init -)"; gem install bundler --no-document --pre

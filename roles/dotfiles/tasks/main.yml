@@ -1,0 +1,25 @@
+---
+- name: Installing Thoughbot's dolifiles
+  git: repo=https://github.com/thoughtbot/dotfiles.git
+       dest="{{ ansible_env.HOME }}/dotfiles"
+       force=yes
+       update=yes
+
+- name: Installing my dotiles
+  git: repo={{dotfiles}}
+    dest="{{ ansible_env.HOME }}/dotfiles-local"
+       force=yes
+       update=yes
+
+- name: Installing Thoughbot rcm repository
+  sudo: yes
+  shell: apt-add-repository -y ppa:martin-frost/thoughtbot-rcm
+
+- name: Installing Thoughbot rcm
+  sudo: yes
+  shell: apt-get update && apt-get install -y --force-yes rcm
+
+- name: Applying dotfiles configurations
+  environment:
+    RCRC: "{{ ansible_env.HOME }}/dotfiles/rcrc"
+  shell: rm -f /home/vagrant/.zshrc; rcup
