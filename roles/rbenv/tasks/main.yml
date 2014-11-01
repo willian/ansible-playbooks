@@ -14,7 +14,7 @@
 - name: Installing latest ruby
   environment:
     PATH: "{{ ansible_env.HOME }}/.rbenv/bin:{{ ansible_env.PATH }}"
-  shell: eval "$(rbenv init -)"; rbenv install -s 2.1.2; rbenv global 2.1.2; rbenv rehash
+  shell: eval "$(rbenv init -)"; rbenv install -s 2.1.4; rbenv global 2.1.4; rbenv rehash
 
 - name: Updating Rubygems
   environment:
