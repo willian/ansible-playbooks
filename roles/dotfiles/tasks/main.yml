@@ -22,4 +22,4 @@
 - name: Applying dotfiles configurations
   environment:
     RCRC: "{{ ansible_env.HOME }}/dotfiles/rcrc"
-  shell: rm -f /home/vagrant/.zshrc; rcup
+  shell: rm -f /home/vagrant/.zshrc /home/vagrant/.zshrc.local; rcup
